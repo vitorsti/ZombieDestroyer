@@ -6,6 +6,7 @@ public class BulletBehavior : MonoBehaviour
 {
     [SerializeField]
     float _speed;
+    float _damage;
     float _life = 1.5f;
     float timer = 0.0f;
     Rigidbody rB;
@@ -36,7 +37,15 @@ public class BulletBehavior : MonoBehaviour
     {
         _speed = value;
     }
+    public void SetDamage(float value)
+    {
+        _damage = value;
+    }
 
+    public float GetDamage()
+    {
+        return _damage;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -49,4 +58,20 @@ public class BulletBehavior : MonoBehaviour
         //rB.AddForce(transform.up * speed * Time.deltaTime, ForceMode.Force);
         //transform.Translate(transform.up * speed * Time.deltaTime, Space.World);
     }
+
+
+    //HealthManager healthManager;
+   /*private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider)
+        {
+            healthManager = collision.gameObject.GetComponent<HealthManager>();
+            if (healthManager)
+            {
+                healthManager.DealDamage(_damage);
+                this.GetComponent<Collider>().isTrigger = false;
+                //Destroy(this.gameObject);
+            }
+        }
+    }*/
 }

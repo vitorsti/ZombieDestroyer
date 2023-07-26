@@ -14,6 +14,7 @@ public class ShootManager : MonoBehaviour
     bool shoot;
     //[SerializeField]
     float _bulletVelocity;
+    float _bulletDamage;
     [Header("Debug")]
     [SerializeField]
     bool auto;
@@ -24,6 +25,7 @@ public class ShootManager : MonoBehaviour
         {
             _fireRate = weaponSettings.GetFireRate();
             _bulletVelocity = weaponSettings.GetBulletSpeed();
+            _bulletDamage = weaponSettings.GetBulletDamage();
         }
     }
     void Start()
@@ -62,6 +64,7 @@ public class ShootManager : MonoBehaviour
         BulletBehavior bulletBehavior = go.GetComponent<BulletBehavior>();
         if (bulletBehavior != null)
         {
+            bulletBehavior.SetDamage(_bulletDamage);
             bulletBehavior.SetSpeed(_bulletVelocity);
             bulletBehavior.ApplyVelocity();
         }

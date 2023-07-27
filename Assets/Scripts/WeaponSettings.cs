@@ -7,14 +7,15 @@ public class WeaponSettings : ScriptableObject
     [SerializeField]
     float _bulletSpeed;
     [SerializeField]
-    float _fireRate;
+    float _rateOfFire;
     public float GetBulletSpeed()
     {
         return _bulletSpeed;
     }
 
+    [Tooltip("ROF - Rate of Fire in Rounds/Min")]
     public float GetFireRate()
     {
-        return _fireRate;
+        return 60f/ _rateOfFire;
     }
 }

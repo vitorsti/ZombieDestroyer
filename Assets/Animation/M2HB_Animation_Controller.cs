@@ -29,7 +29,9 @@ public class M2HB_Animation_Controller : MonoBehaviour
     {
         // Set the "Fire" bool parameter to false in the animator
         animator.SetBool("Fire", false);
+#if UNITY_EDITOR
         Debug.Log("fire:false");
+#endif
     }
 
 
@@ -38,7 +40,9 @@ public class M2HB_Animation_Controller : MonoBehaviour
         // Check if the targetObject is assigned
         if (fxObject == null)
         {
+#if UNITY_EDITOR
             Debug.LogWarning("Target object is not assigned!");
+#endif
             return;
         }
 

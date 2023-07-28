@@ -24,6 +24,7 @@ public class BulletBehavior : MonoBehaviour
 
         if (_speed > 0)
             rB.AddForce(transform.up * _speed, ForceMode.Impulse);
+            //transform.Translate(transform.up * _speed * Time.deltaTime, Space.World);
         else
         {
 #if UNITY_EDITOR
@@ -55,13 +56,15 @@ public class BulletBehavior : MonoBehaviour
         {
             Destroy(this.gameObject)
 ;        }
+        //ApplyVelocity();
         //rB.AddForce(transform.up * speed * Time.deltaTime, ForceMode.Force);
         //transform.Translate(transform.up * speed * Time.deltaTime, Space.World);
     }
 
 
-    //HealthManager healthManager;
-   /*private void OnCollisionEnter(Collision collision)
+    HealthManager healthManager;
+    Rigidbody otherRb;
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider)
         {
@@ -69,9 +72,31 @@ public class BulletBehavior : MonoBehaviour
             if (healthManager)
             {
                 healthManager.DealDamage(_damage);
-                this.GetComponent<Collider>().isTrigger = false;
+                //this.GetComponent<Collider>().isTrigger = false;
                 //Destroy(this.gameObject);
             }
         }
-    }*/
+    }
+
+  /* private void OnTriggerEnter(Collider other)
+    {
+        //if (other)
+        //{
+        Debug.Log(other.name);
+            healthManager = other.GetComponent<HealthManager>();
+            otherRb = other.GetComponent<Rigidbody>();
+            if (healthManager)
+            {
+                healthManager.DealDamage(_damage);
+                //this.GetComponent<Collider>().isTrigger = false;
+                //Destroy(this.gameObject);
+            }
+        if (otherRb)
+        {
+            otherRb.AddForceAtPosition(transform.up * 1f, transform.position, ForceMode.Impulse);
+
+        }
+        //}
+    }
+*/
 }

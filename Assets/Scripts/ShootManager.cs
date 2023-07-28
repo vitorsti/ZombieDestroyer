@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShootManager : MonoBehaviour
 {
+    public M2HB_Animation_Controller animation_Controller;
+
     public WeaponSettings weaponSettings;
     [SerializeField]
     GameObject _bullet;
@@ -21,6 +23,8 @@ public class ShootManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        animation_Controller = GetComponentInChildren<M2HB_Animation_Controller>();
+
         if (weaponSettings != null)
         {
             _fireRate = weaponSettings.GetFireRate();
@@ -87,6 +91,7 @@ public class ShootManager : MonoBehaviour
 
         if (bulletBehavior != null)
         {
+            animation_Controller.ShootAnim();
             bulletBehavior.SetSpeed(_bulletVelocity);
             bulletBehavior.ApplyVelocity();
         }

@@ -20,9 +20,9 @@ public class Aim : MonoBehaviour
     float _mouseY = 0;
     float sensitivity = 5;
 
-    [SerializeField]
-    float _fireRate;
-    bool shoot;
+    //[SerializeField]
+    //float _fireRate;
+    //bool shoot;
 
     [SerializeField]
     bool useLookAt;
@@ -30,7 +30,7 @@ public class Aim : MonoBehaviour
     void Start()
     {
         //zOffset = transform.position.z;
-        shoot = true;
+        //shoot = true;
         //Cursor.lockState = CursorLockMode.Locked;
         ///Cursor.visible = true;
     }

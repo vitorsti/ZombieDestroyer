@@ -8,6 +8,8 @@ public class WeaponSettings : ScriptableObject
     float _bulletSpeed;
     [SerializeField]
     float _rateOfFire;
+    [SerializeField]
+    float _damage;
     public float GetBulletSpeed()
     {
         return _bulletSpeed;
@@ -17,5 +19,10 @@ public class WeaponSettings : ScriptableObject
     public float GetFireRate()
     {
         return 60f/ _rateOfFire;
+    }
+
+    public float GetBulletDamage()
+    {
+        return _damage;
     }
 }

@@ -22,6 +22,8 @@ public class ShootManager : MonoBehaviour
     public Ray _ray;
     [SerializeField]
     TrailRenderer bulletTrail;
+
+    float lastShootTime;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -47,65 +49,73 @@ public class ShootManager : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                if (shoot)
-                {
+                //i//f (shoot)
+                //{
                     Fire();
-                }
+                //}
             }
         }
         else
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (shoot)
-                {
+                //if (shoot)
+                //{
                     Fire();
-                }
+                //}
             }
         }
     }
 
     void Fire()
     {
-        RaycastHit hit;
-        _ray.origin = _bulletSpawn.position;
-        _ray.direction = transform.forward;
-
-        if (Physics.Raycast(_ray.origin, _ray.direction, out hit, Mathf.Infinity))
+        if (lastShootTime + _fireRate < Time.time)
         {
+            RaycastHit hit;
+            _ray.origin = _bulletSpawn.position;
+            _ray.direction = transform.forward;
+
+            if (Physics.Raycast(_ray.origin, _ray.direction, out hit, Mathf.Infinity))
+            {
 
 #if UNITY_EDITOR
 
-            float distance = Vector3.Distance(_ray.origin, hit.point);
+                float distance = Vector3.Distance(_ray.origin, hit.point);
 
-            Debug.DrawRay(_ray.origin, _ray.direction * distance, Color.blue);
-            Debug.Log(hit.transform.name);
+                Debug.DrawRay(_ray.origin, _ray.direction * distance, Color.blue);
+                Debug.Log(hit.transform.name);
 #endif
 
-            //if (hit.rigidbody)
-              //  hit.rigidbody.AddForceAtPosition(transform.forward * 50f, hit.point, ForceMode.Force);
-            TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit/*, false*/));
-            //ApplyDamage(hit.transform.gameObject);
-        }
-        else
-        {
+                //if (hit.rigidbody)
+                //  hit.rigidbody.AddForceAtPosition(transform.forward * 50f, hit.point, ForceMode.Force);
+                TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(trail, hit));
+                //ApplyDamage(hit.transform.gameObject);
+                lastShootTime = Time.time;
+                
+            }
+            else
+            {
 #if UNITY_EDITOR
-            Debug.DrawRay(_ray.origin, _ray.direction * 1000f, Color.blue);
+                Debug.DrawRay(_ray.origin, _ray.direction * 1000f, Color.blue);
 #endif
-            TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hit/*, true*/));
+                TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(trail, hit));
+                lastShootTime = Time.time;
+            }
+            /*
+            GameObject go = Instantiate(_bullet, _bulletSpawn.position, _bulletSpawn.rotation);
+            BulletBehavior bulletBehavior = go.GetComponent<BulletBehavior>();
+            if (bulletBehavior != null)
+            {
+              bulletBehavior.SetDamage(_bulletDamage);
+            bulletBehavior.SetSpeed(_bulletVelocity);
+            bulletBehavior.ApplyVelocity();
+            }
+            
+            lastShootTime = Time.time;*/
         }
-
-        //GameObject go = Instantiate(_bullet, _bulletSpawn.position, _bulletSpawn.rotation);
-        //BulletBehavior bulletBehavior = go.GetComponent<BulletBehavior>();
-        //if (bulletBehavior != null)
-        //{
-        //  bulletBehavior.SetDamage(_bulletDamage);
-        //bulletBehavior.SetSpeed(_bulletVelocity);
-        //bulletBehavior.ApplyVelocity();
-        //}
-        StartCoroutine(FireRate());
+        //StartCoroutine(FireRate());
     }
 
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit/*, bool noHit*/)
@@ -129,8 +139,8 @@ public class ShootManager : MonoBehaviour
             Vector3 endPostion = _ray.direction * 100f;
             while (time < 1)
             {
-                trail.transform.position = Vector3.Lerp(startPostion, endPostion, time);
-                time += Time.deltaTime / trail.time ;
+                trail.transform.position = Vector3.Lerp(startPostion, endPostion, time );
+                time += Time.deltaTime / trail.time * _bulletVelocity;
                 yield return null;
             }
             trail.transform.position = endPostion;

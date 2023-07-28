@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletSpeed: 100
   _rateOfFire: 500
+  _damage: 1

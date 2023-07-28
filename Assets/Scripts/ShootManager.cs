@@ -51,7 +51,7 @@ public class ShootManager : MonoBehaviour
             {
                 //i//f (shoot)
                 //{
-                    Fire();
+                Fire();
                 //}
             }
         }
@@ -61,7 +61,7 @@ public class ShootManager : MonoBehaviour
             {
                 //if (shoot)
                 //{
-                    Fire();
+                Fire();
                 //}
             }
         }
@@ -71,49 +71,19 @@ public class ShootManager : MonoBehaviour
     {
         if (lastShootTime + _fireRate < Time.time)
         {
-            RaycastHit hit;
-            _ray.origin = _bulletSpawn.position;
-            _ray.direction = transform.forward;
 
-            if (Physics.Raycast(_ray.origin, _ray.direction, out hit, Mathf.Infinity))
-            {
-
-#if UNITY_EDITOR
-
-                float distance = Vector3.Distance(_ray.origin, hit.point);
-
-                Debug.DrawRay(_ray.origin, _ray.direction * distance, Color.blue);
-                Debug.Log(hit.transform.name);
-#endif
-
-                //if (hit.rigidbody)
-                //  hit.rigidbody.AddForceAtPosition(transform.forward * 50f, hit.point, ForceMode.Force);
-                TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hit));
-                //ApplyDamage(hit.transform.gameObject);
-                lastShootTime = Time.time;
-                
-            }
-            else
-            {
-#if UNITY_EDITOR
-                Debug.DrawRay(_ray.origin, _ray.direction * 1000f, Color.blue);
-#endif
-                TrailRenderer trail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hit));
-                lastShootTime = Time.time;
-            }
-            /*
             GameObject go = Instantiate(_bullet, _bulletSpawn.position, _bulletSpawn.rotation);
             BulletBehavior bulletBehavior = go.GetComponent<BulletBehavior>();
             if (bulletBehavior != null)
             {
-              bulletBehavior.SetDamage(_bulletDamage);
-            bulletBehavior.SetSpeed(_bulletVelocity);
-            bulletBehavior.ApplyVelocity();
+
+                M2HB_Animation_Controller.instance.ShootAnim();
+                bulletBehavior.SetDamage(_bulletDamage);
+                bulletBehavior.SetSpeed(_bulletVelocity);
+                bulletBehavior.ApplyVelocity();
             }
-            
-            lastShootTime = Time.time;*/
+
+            lastShootTime = Time.time;
         }
         //StartCoroutine(FireRate());
     }
@@ -136,14 +106,14 @@ public class ShootManager : MonoBehaviour
         }
         else
         {*/
-            Vector3 endPostion = _ray.direction * 100f;
-            while (time < 1)
-            {
-                trail.transform.position = Vector3.Lerp(startPostion, endPostion, time );
-                time += Time.deltaTime / trail.time * _bulletVelocity;
-                yield return null;
-            }
-            trail.transform.position = endPostion;
+        Vector3 endPostion = _ray.direction * 100f;
+        while (time < 1)
+        {
+            trail.transform.position = Vector3.Lerp(startPostion, endPostion, time);
+            time += Time.deltaTime / trail.time * _bulletVelocity;
+            yield return null;
+        }
+        trail.transform.position = endPostion;
         if (hit.transform)
         {
             ApplyDamage(hit.transform.gameObject);

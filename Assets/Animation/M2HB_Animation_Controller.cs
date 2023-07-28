@@ -7,10 +7,13 @@ public class M2HB_Animation_Controller : MonoBehaviour
     private Animator animator;
     public GameObject fxObject;
 
+    public static M2HB_Animation_Controller instance;
+
     private void Awake()
     {
         // Get the Animator component attached to this GameObject
         animator = GetComponent<Animator>();
+        instance = this;
     }
 
     // Call this method whenever the M2HB fires

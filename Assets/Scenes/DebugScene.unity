@@ -7399,6 +7399,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7886313654608954375, guid: ea031e8fb383fca468313c8f85c5c2a0, type: 3}
+      propertyPath: muzzleVelocity
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 8481842120925802480, guid: ea031e8fb383fca468313c8f85c5c2a0, type: 3}
       propertyPath: m_Name
       value: Bullet

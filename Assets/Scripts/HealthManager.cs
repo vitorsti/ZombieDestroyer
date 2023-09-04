@@ -55,10 +55,9 @@ public class HealthManager : MonoBehaviour
         SetHealth(dif);
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
-        /*if(other.gameObject.name == "Bullet(Clone)")
-        {*/
+        
         Debug.Log(other.name);
         BulletBehavior bulletBehavior;
         bulletBehavior = other.GetComponent<BulletBehavior>();
@@ -67,5 +66,5 @@ public class HealthManager : MonoBehaviour
             DealDamage(other.GetComponent<BulletBehavior>().GetDamage());
         }
         ///}
-    }
+    }*/
 }

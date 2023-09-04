@@ -18,7 +18,12 @@ public class WeaponSettings : ScriptableObject
     [Tooltip("ROF - Rate of Fire in Rounds/Min")]
     public float GetFireRate()
     {
-        return 60f/ _rateOfFire;
+        return _rateOfFire;
+    }
+
+    public float GetFireRateMarco()
+    {
+        return 60f / _rateOfFire;
     }
 
     public float GetBulletDamage()

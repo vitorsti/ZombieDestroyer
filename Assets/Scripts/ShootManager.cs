@@ -69,8 +69,13 @@ public class ShootManager : MonoBehaviour
 
     void Fire()
     {
+        /*Debug.DrawRay(_bulletSpawn.position
+            , _bulletSpawn.up * 100f, Color.red);*/
         if (lastShootTime + _fireRate < Time.time)
         {
+            _ray.direction = _bulletSpawn.forward;
+
+            #region NonRaycast
 
             GameObject go = Instantiate(_bullet, _bulletSpawn.position, _bulletSpawn.rotation);
             BulletBehavior bulletBehavior = go.GetComponent<BulletBehavior>();
@@ -83,12 +88,33 @@ public class ShootManager : MonoBehaviour
                 bulletBehavior.ApplyVelocity();
             }
 
+            #endregion
+
+            #region Raycast
+
+           /* M2HB_Animation_Controller.instance.ShootAnim();
+            RaycastHit hit;
+            Debug.DrawRay(_ray.origin, _ray.direction * 100f, Color.red);
+            if (Physics.Raycast(_bulletSpawn.position, _ray.direction, out hit, Mathf.Infinity))
+            {
+                TrailRenderer newTrail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(newTrail, hit,true));
+            }
+            else
+            {
+                TrailRenderer newTrail = Instantiate(bulletTrail, _bulletSpawn.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(newTrail, hit,false));
+            }
+           */
+
+            #endregion
+
             lastShootTime = Time.time;
         }
         //StartCoroutine(FireRate());
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit/*, bool noHit*/)
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit, bool haveHit)
     {
 
         float time = 0;
@@ -106,11 +132,18 @@ public class ShootManager : MonoBehaviour
         }
         else
         {*/
-        Vector3 endPostion = _ray.direction * 100f;
+
+        Vector3 endPostion;
+        if (haveHit)
+            endPostion = hit.point;
+        else
+            endPostion = _ray.direction * 500f;
+
+        //endPostion = endPostion.normalized;
         while (time < 1)
         {
             trail.transform.position = Vector3.Lerp(startPostion, endPostion, time);
-            time += Time.deltaTime / trail.time * _bulletVelocity;
+            time += Time.deltaTime / trail.time /* _bulletVelocity*/;
             yield return null;
         }
         trail.transform.position = endPostion;
@@ -119,8 +152,14 @@ public class ShootManager : MonoBehaviour
             ApplyDamage(hit.transform.gameObject);
             if (hit.rigidbody)
                 hit.rigidbody.AddForceAtPosition(transform.forward * 50f, hit.point, ForceMode.Force);
+            DestroyImmediate(trail.gameObject);
         }
-        Destroy(trail.gameObject, trail.time);
+        else
+        {
+            //Destroy(trail.gameObject, 1f);
+            DestroyImmediate(trail.gameObject);
+        }
+        //
         yield return null;
 
         // }
